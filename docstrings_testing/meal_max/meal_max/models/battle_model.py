@@ -12,21 +12,33 @@ configure_logger(logger)
 
 class BattleModel:
     """
+<<<<<<< HEAD
     A class to conduct a battle between multiple meals.
 
     Attributes: 
         combatants (List[Meal]): List of meals currently battling.
 
+=======
+    A class used to manage the battle between meals
+
+    Attributes:
+        combatants (List[Meal]): Stores the list of combatants.
+>>>>>>> f7dfcc7d2e0018a70890860b121e5b175fecb00d
     """
 
     def __init__(self):
         """
+<<<<<<< HEAD
         Initializes the BattleModel with an empty combatants list.
+=======
+        Initializes the BattleModel with an empty list of combatants.
+>>>>>>> f7dfcc7d2e0018a70890860b121e5b175fecb00d
         """
         self.combatants: List[Meal] = []
 
     def battle(self) -> str:
         """
+<<<<<<< HEAD
         Conducts a battle between two combatants, displaying the winner and removing the loser.
         
         Raises:
@@ -38,6 +50,17 @@ class BattleModel:
         Returns:
             Combatant 1 or 2, depending on who won.
                 
+=======
+        Starts battle between two combatants to determine a winner by calculating the battle score for each combatant, 
+        comparing them with a random number, and determining the winner based on the delta. The winner remains in the list 
+        while the loser gets removed.
+
+        Returns:
+            str: The name of the winning meal.
+
+        Raises:
+            ValueError: If there are less than two combatants.
+>>>>>>> f7dfcc7d2e0018a70890860b121e5b175fecb00d
         """
         logger.info("Two meals enter, one meal leaves!")
 
@@ -93,13 +116,18 @@ class BattleModel:
 
     def clear_combatants(self):
         """
+<<<<<<< HEAD
         Clears the current battle of all combatants
+=======
+        Clears the current combatants from the battle list.
+>>>>>>> f7dfcc7d2e0018a70890860b121e5b175fecb00d
         """
         logger.info("Clearing the combatants list.")
         self.combatants.clear()
 
     def get_battle_score(self, combatant: Meal) -> float:
         """
+<<<<<<< HEAD
         Gets the battle scores of a combatant based on difficulty, price, and cuisine.
 
         Args:
@@ -107,6 +135,15 @@ class BattleModel:
 
         Returns:
             The battle score of inputted combatant.
+=======
+        Calculates the battle score based on price, cuisine, and difficulty.
+
+        Args:
+            combatant (Meal): The Meal instance representing the combatant.
+
+        Returns:
+            float: The calculated battle score.
+>>>>>>> f7dfcc7d2e0018a70890860b121e5b175fecb00d
         """
         difficulty_modifier = {"HIGH": 1, "MED": 2, "LOW": 3}
 
@@ -124,16 +161,24 @@ class BattleModel:
 
     def get_combatants(self) -> List[Meal]:
         """
+<<<<<<< HEAD
         Returns the info of combatants in the battle.
 
         Returns:
             List of combatants in battle.
+=======
+        Returns the current list of combatants.
+
+        Returns:
+            List[Meal]: Current list of combatants.
+>>>>>>> f7dfcc7d2e0018a70890860b121e5b175fecb00d
         """
         logger.info("Retrieving current list of combatants.")
         return self.combatants
 
     def prep_combatant(self, combatant_data: Meal):
         """
+<<<<<<< HEAD
         Adds a combatant to the battle.
         
         Args: 
@@ -141,6 +186,15 @@ class BattleModel:
 
         Raises: 
             ValueError: If the current battle is already full.
+=======
+            Adds a new combatant to prepare them for battle if there is enough space.
+
+            Args:
+                combatant_data (Meal): The meal to add as a combatant.
+
+            Raises:
+                ValueError: If the combatants list already has two entries.
+>>>>>>> f7dfcc7d2e0018a70890860b121e5b175fecb00d
         """
         if len(self.combatants) >= 2:
             logger.error("Attempted to add combatant '%s' but combatants list is full", combatant_data.meal)
