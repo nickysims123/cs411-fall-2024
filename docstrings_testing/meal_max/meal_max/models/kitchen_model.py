@@ -156,6 +156,19 @@ def get_leaderboard(sort_by: str="wins") -> dict[str, Any]:
         raise e
 
 def get_meal_by_id(meal_id: int) -> Meal:
+    """
+    Retrieves a meal by its ID.
+
+    Args:
+        meal_id (int): ID of the meal.
+
+    Returns:
+        Meal: The meal instance with the specified ID.
+
+    Raises:
+        ValueError: If the meal cannot be found or has been deleted.
+        sqlite3.Error: If there a database error.
+    """
     try:
         with get_db_connection() as conn:
             cursor = conn.cursor()
@@ -177,6 +190,19 @@ def get_meal_by_id(meal_id: int) -> Meal:
 
 
 def get_meal_by_name(meal_name: str) -> Meal:
+    """
+    Retrieves a meal by its name.
+
+    Args:
+        meal_name (str): Name of the meal.
+
+    Returns:
+        Meal: The meal instance with the specified input name.
+
+    Raises:
+        ValueError: If the meal is not found or has been deleted.
+        sqlite3.Error: If there a database error.
+    """
     try:
         with get_db_connection() as conn:
             cursor = conn.cursor()
@@ -198,6 +224,20 @@ def get_meal_by_name(meal_name: str) -> Meal:
 
 
 def update_meal_stats(meal_id: int, result: str) -> None:
+    """
+    Updates meal statistics based on the result of the battle
+
+    Args:
+        meal_id (int): ID of the meal.
+        result (str): Battle outcome, can be 'win' or 'loss'.
+
+    Side Effects:
+        Increments 'battles' and optionally 'wins' in the 'meals' table.
+        
+    Raises:
+        ValueError: If the meal is not found, deleted, or the result is invalid (not 'win' or 'loss').
+        sqlite3.Error: If there a database error.
+    """
     try:
         with get_db_connection() as conn:
             cursor = conn.cursor()
