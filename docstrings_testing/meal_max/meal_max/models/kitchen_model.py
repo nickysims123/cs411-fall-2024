@@ -233,7 +233,7 @@ def update_meal_stats(meal_id: int, result: str) -> None:
 
     Side Effects:
         Increments 'battles' and optionally 'wins' in the 'meals' table.
-        
+
     Raises:
         ValueError: If the meal is not found, deleted, or the result is invalid (not 'win' or 'loss').
         sqlite3.Error: If there a database error.
