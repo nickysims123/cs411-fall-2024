@@ -226,7 +226,7 @@ def get_meal_by_name(meal_name: str) -> Meal:
 def update_meal_stats(meal_id: int, result: str) -> None:
     """
     Updates meal statistics based on the result of the battle
-
+    
     Args:
         meal_id (int): ID of the meal.
         result (str): Battle outcome, can be 'win' or 'loss'.
