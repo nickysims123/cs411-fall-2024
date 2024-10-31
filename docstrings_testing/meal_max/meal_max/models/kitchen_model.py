@@ -27,6 +27,21 @@ class Meal:
 
 
 def create_meal(meal: str, cuisine: str, price: float, difficulty: str) -> None:
+    """
+    Creates a new meal in the meals table.
+
+    Args:
+        meal (str): The meal's name.
+        cuisine (str): The meal's cuisine.
+        price (float): The price of the meal.
+        difficulty (str): The meal's difficulty. 
+
+    Raises:
+        ValueError: If price or difficulty are invalid.
+        sqlite3.IntegrityError: If there is already a meal with the same name.
+        sqlite3.Error: If there is any other database error. 
+
+    """
     if not isinstance(price, (int, float)) or price <= 0:
         raise ValueError(f"Invalid price: {price}. Price must be a positive number.")
     if difficulty not in ['LOW', 'MED', 'HIGH']:
@@ -53,6 +68,16 @@ def create_meal(meal: str, cuisine: str, price: float, difficulty: str) -> None:
 
 
 def delete_meal(meal_id: int) -> None:
+    """
+    Deletes a meal by its ID by setting it to deleted. 
+    
+    Args:
+        meal_id (int): The ID of the meal to be deleted.
+
+    Raises: 
+        ValueError: If the meal with the given ID has already been deleted or is not found.
+        sqlite3.Error: If any database error occurs. 
+        """
     try:
         with get_db_connection() as conn:
             cursor = conn.cursor()
@@ -76,6 +101,20 @@ def delete_meal(meal_id: int) -> None:
         raise e
 
 def get_leaderboard(sort_by: str="wins") -> dict[str, Any]:
+    """
+    Retrieves a leaderboard of all meals that are not marked as deleted.
+
+    Args:
+        sort_by (str): If sort_by = "wins" then sorts by wins in descending order, if "win_pct" 
+        then sorts by win percentage in descending order.
+
+    Raises: 
+        ValueError: If an invalid sort_by parameter has been passed.
+        sqlite3.Error: If any database error occurs.
+
+    Returns: 
+        list[dict]: A list of all dictionaries representing all non-deleted meals sorted by inputted order.
+    """
     query = """
         SELECT id, meal, cuisine, price, difficulty, battles, wins, (wins * 1.0 / battles) AS win_pct
         FROM meals WHERE deleted = false AND battles > 0
