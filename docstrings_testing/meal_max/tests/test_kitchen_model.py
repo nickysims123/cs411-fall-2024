@@ -100,9 +100,9 @@ def test_delete_meal(mock_cursor):
 
 def test_delete_meal_already_deleted(mock_cursor):
     """Test error when trying to delete a meal that's already marked as deleted."""
-    mock_cursor.fetchone.return_value = ([True])
+    mock_cursor.fetchone.return_value = [True]
 
-    with pytest.raises(ValueError, match="Meal with ID 999 has already been deleted"):
+    with pytest.raises(ValueError, match="Meal with ID 999 has been deleted"):
         delete_meal(999)
     
 def test_delete_meal_bad_id(mock_cursor):
@@ -113,14 +113,13 @@ def test_delete_meal_bad_id(mock_cursor):
         delete_meal(999)
 
 def test_get_leaderboard_wins(mock_cursor):
-    """Test retrieving the leaderboard sorted by wins"""
-
+    """Test retrieving the leaderboard sorted by wins."""
     mock_cursor.fetchall.return_value = [
-        (1, "Chicken Alfredo", "Italian", 12.5, "MED", 15, 10, 0.666),
+        (5, "BBQ Ribs", "American", 20.0, "HIGH", 25, 20, 0.8),
         (2, "Beef Wellington", "French", 30.0, "HIGH", 20, 15, 0.75),
-        (3, "Pad Thai", "Thai", 10.0, "LOW", 12, 8, 0.666),
-        (4, "Sushi Roll", "Japanese", 15.0, "MED", 18, 12, 0.666),
-        (5, "BBQ Ribs", "American", 20.0, "HIGH", 25, 20, 0.8)
+        (4, "Sushi Roll", "Japanese", 15.0, "MED", 18, 12, 0.70),
+        (1, "Chicken Alfredo", "Italian", 12.5, "MED", 15, 10, 0.60),
+        (3, "Pad Thai", "Thai", 10.0, "LOW", 12, 8, 0.55),
     ]
 
     leaderboard = get_leaderboard(sort_by="wins")
@@ -128,9 +127,9 @@ def test_get_leaderboard_wins(mock_cursor):
     expected_leaderboard = [
         {'id': 5, 'meal': "BBQ Ribs", 'cuisine': "American", 'price': 20.0, 'difficulty': "HIGH", 'battles': 25, 'wins': 20, 'win_pct': 80.0},
         {'id': 2, 'meal': "Beef Wellington", 'cuisine': "French", 'price': 30.0, 'difficulty': "HIGH", 'battles': 20, 'wins': 15, 'win_pct': 75.0},
-        {'id': 1, 'meal': "Chicken Alfredo",'cuisine': "Italian",'price': 12.5,'difficulty': "MED",'battles': 15,'wins': 10,'win_pct': 66.6},
-        {'id': 4, 'meal': "Sushi Roll", 'cuisine': "Japanese", 'price': 15.0, 'difficulty': "MED", 'battles': 18, 'wins': 12, 'win_pct': 66.6},
-        {'id': 3, 'meal': "Pad Thai", 'cuisine': "Thai", 'price': 10.0, 'difficulty': "LOW", 'battles': 12, 'wins': 8, 'win_pct': 66.6}
+        {'id': 4, 'meal': "Sushi Roll", 'cuisine': "Japanese", 'price': 15.0, 'difficulty': "MED", 'battles': 18, 'wins': 12, 'win_pct': 70.0},
+        {'id': 1, 'meal': "Chicken Alfredo", 'cuisine': "Italian", 'price': 12.5, 'difficulty': "MED", 'battles': 15, 'wins': 10, 'win_pct': 60.0},
+        {'id': 3, 'meal': "Pad Thai", 'cuisine': "Thai", 'price': 10.0, 'difficulty': "LOW", 'battles': 12, 'wins': 8, 'win_pct': 55.0}
     ]
 
     assert leaderboard == expected_leaderboard, f"Expected {expected_leaderboard}, but got {leaderboard}"
@@ -147,11 +146,11 @@ def test_get_leaderboard_wins(mock_cursor):
 def test_get_leaderboard_win_pct(mock_cursor):
     """Test retrieving the leaderboard sorted by win percentage with real meal examples."""
     mock_cursor.fetchall.return_value = [
-        (1, "Chicken Alfredo", "Italian", 12.5, "MED", 15, 10, 0.666),
+        (5, "BBQ Ribs", "American", 20.0, "HIGH", 25, 20, 0.8),
         (2, "Beef Wellington", "French", 30.0, "HIGH", 20, 15, 0.75),
-        (3, "Pad Thai", "Thai", 10.0, "LOW", 12, 8, 0.666),
-        (4, "Sushi Roll", "Japanese", 15.0, "MED", 18, 12, 0.666),
-        (5, "BBQ Ribs", "American", 20.0, "HIGH", 25, 20, 0.8)
+        (4, "Sushi Roll", "Japanese", 15.0, "MED", 18, 12, 0.70),
+        (1, "Chicken Alfredo", "Italian", 12.5, "MED", 15, 10, 0.60),
+        (3, "Pad Thai", "Thai", 10.0, "LOW", 12, 8, 0.55),
     ]
 
     leaderboard = get_leaderboard(sort_by="win_pct")
@@ -159,9 +158,9 @@ def test_get_leaderboard_win_pct(mock_cursor):
     expected_leaderboard = [
         {'id': 5, 'meal': "BBQ Ribs", 'cuisine': "American", 'price': 20.0, 'difficulty': "HIGH", 'battles': 25, 'wins': 20, 'win_pct': 80.0},
         {'id': 2, 'meal': "Beef Wellington", 'cuisine': "French", 'price': 30.0, 'difficulty': "HIGH", 'battles': 20, 'wins': 15, 'win_pct': 75.0},
-        {'id': 1, 'meal': "Chicken Alfredo", 'cuisine': "Italian", 'price': 12.5, 'difficulty': "MED", 'battles': 15, 'wins': 10, 'win_pct': 66.6},
-        {'id': 4, 'meal': "Sushi Roll", 'cuisine': "Japanese", 'price': 15.0, 'difficulty': "MED", 'battles': 18, 'wins': 12, 'win_pct': 66.6},
-        {'id': 3, 'meal': "Pad Thai", 'cuisine': "Thai", 'price': 10.0, 'difficulty': "LOW", 'battles': 12, 'wins': 8, 'win_pct': 66.6}
+        {'id': 4, 'meal': "Sushi Roll", 'cuisine': "Japanese", 'price': 15.0, 'difficulty': "MED", 'battles': 18, 'wins': 12, 'win_pct': 70.0},
+        {'id': 1, 'meal': "Chicken Alfredo", 'cuisine': "Italian", 'price': 12.5, 'difficulty': "MED", 'battles': 15, 'wins': 10, 'win_pct': 60.0},
+        {'id': 3, 'meal': "Pad Thai", 'cuisine': "Thai", 'price': 10.0, 'difficulty': "LOW", 'battles': 12, 'wins': 8, 'win_pct': 55.0}
     ]
 
     assert leaderboard == expected_leaderboard, f"Expected {expected_leaderboard}, but got {leaderboard}"
