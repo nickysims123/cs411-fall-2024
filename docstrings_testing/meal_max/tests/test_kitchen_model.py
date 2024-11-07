@@ -6,6 +6,7 @@ import pytest
 from meal_max.models.kitchen_model import (
     Meal,
     create_meal,
+    clear_meals,
     delete_meal,
     get_leaderboard,
     get_meal_by_id,
@@ -73,6 +74,17 @@ def test_create_meal_invalid_difficulty():
     """Test error when trying to create a meal with an invalid difficulty level."""
     with pytest.raises(ValueError, match="Invalid difficulty level: MASTER CHEF. Must be 'LOW', 'MED', or 'HIGH'."):
         create_meal(meal="Ramen", cuisine="Japanese", price=15.0, difficulty="MASTER CHEF")
+
+
+def test_clear_meals(mock_cursor, mocker):
+    """Test clearing the meals"""
+    mocker.patch.dict('os.environ', {'SQL_CREATE_TABLE_PATH': 'sql/create_meal_table.sql'})
+    mock_open = mocker.patch('builtins.open', mocker.mock_open(read_data="The body of the create statement"))
+    
+    clear_meals()
+
+    mock_open.assert_called_once_with('sql/create_meal_table.sql', 'r')
+    mock_cursor.executescript.assert_called_once()
 
 def test_delete_meal(mock_cursor):
     """Test soft deleting a meal from the catalog by meal ID."""
