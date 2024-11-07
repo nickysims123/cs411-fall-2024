@@ -89,29 +89,6 @@ def clear_meals() -> None:
         raise e
 
 def delete_meal(meal_id: int) -> None:
-    try:
-        with get_db_connection() as conn:
-            cursor = conn.cursor()
-            cursor.execute("SELECT deleted FROM meals WHERE id = ?", (meal_id,))
-            try:
-                deleted = cursor.fetchone()[0]
-                if deleted:
-                    logger.info("Meal with ID %s has already been deleted", meal_id)
-                    raise ValueError(f"Meal with ID {meal_id} has been deleted")
-            except TypeError:
-                logger.info("Meal with ID %s not found", meal_id)
-                raise ValueError(f"Meal with ID {meal_id} not found")
-
-            cursor.execute("UPDATE meals SET deleted = TRUE WHERE id = ?", (meal_id,))
-            conn.commit()
-
-            logger.info("Meal with ID %s marked as deleted.", meal_id)
-
-    except sqlite3.Error as e:
-        logger.error("Database error: %s", str(e))
-        raise e
-
-def delete_meal(meal_id: int) -> None:
     """
     Deletes a meal by its ID by setting it to deleted. 
     
